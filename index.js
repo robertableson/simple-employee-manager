@@ -1,5 +1,5 @@
 const express     = require('express');
-const router      = require('./routes/api');
+const routes      = require('./routes/routes');
 const bodyParser  = require('body-parser');
 const mongoose    = require('mongoose');
 
@@ -15,13 +15,13 @@ db.once('open', function() {
   console.log("Connected to MongoDB.");
 });
 
+//init routes
+app.use(routes);
+
 //get json http request body
 app.use(bodyParser.json());
 
-//init routes
-app.use(router);
-
-//error handling middleware
+//error handling middleware (accessed by next() callback)
 app.use(function(error, request, response, next){
   console.log(error);
   response.status(422).send({error: error._message});
